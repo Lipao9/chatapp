@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4602285280710840bc7cca33d1e053c6
+class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -15,6 +15,8 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
         'c7b4a5d8b94d270f0f9a84f81e1dd63d' => __DIR__ . '/..' . '/open-telemetry/api/Trace/functions.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -23,12 +25,15 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
             'Symfony\\Polyfill\\Php82\\' => 23,
             'Symfony\\Polyfill\\Php81\\' => 23,
             'Symfony\\Polyfill\\Php80\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
+            'PhpOption\\' => 10,
         ),
         'O' => 
         array (
@@ -46,11 +51,16 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
             'GuzzleHttp\\Psr7\\' => 16,
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+            'GrahamCampbell\\ResultType\\' => 26,
         ),
         'E' => 
         array (
             'Elastic\\Transport\\' => 18,
             'Elastic\\Elasticsearch\\' => 22,
+        ),
+        'D' => 
+        array (
+            'Dotenv\\' => 7,
         ),
         'A' => 
         array (
@@ -71,6 +81,14 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -83,6 +101,10 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
         'Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
+        'PhpOption\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
         ),
         'OpenTelemetry\\Context\\' => 
         array (
@@ -116,6 +138,10 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'GrahamCampbell\\ResultType\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/graham-campbell/result-type/src',
+        ),
         'Elastic\\Transport\\' => 
         array (
             0 => __DIR__ . '/..' . '/elastic/transport/src',
@@ -123,6 +149,10 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
         'Elastic\\Elasticsearch\\' => 
         array (
             0 => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src',
+        ),
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
         ),
         'App\\' => 
         array (
@@ -153,9 +183,9 @@ class ComposerStaticInit4602285280710840bc7cca33d1e053c6
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit4602285280710840bc7cca33d1e053c6::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit4602285280710840bc7cca33d1e053c6::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit4602285280710840bc7cca33d1e053c6::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467::$classMap;
 
         }, null, ClassLoader::class);
     }

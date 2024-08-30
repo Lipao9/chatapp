@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../migrations/create_users_table.php';
+    require_once '../config/database.php';
 
     try {
         $pdo = new PDO('pgsql:host=localhost;dbname=chatapp', 'postgres', '123');
