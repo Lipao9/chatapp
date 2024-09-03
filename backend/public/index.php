@@ -16,14 +16,11 @@
     }
 
     // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
-    if (preg_match('/^\/api\/user-edit\/(\d+)$/', $requestUri, $matches)) {
+    if (preg_match('/^\/api\/user-edit\/(\d+)/', $requestUri, $matches)) {
         // O ID do usuário está no primeiro grupo de captura
         $userId = $matches[1];
-        // Verifique se o método da requisição é POST (ou o método que você usa para edição)
-        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            // Chame o método de edição do objeto $user, passando o ID e os dados POST
-            $userController->edit($userId, $_POST);
-        }
+        // Chame o método de edição do objeto $user, passando o ID e os dados POST
+        $userController->edit($userId, $_POST);
     }
 
     // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'

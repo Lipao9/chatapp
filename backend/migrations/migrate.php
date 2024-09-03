@@ -1,10 +1,8 @@
 <?php
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../migrations/create_users_table.php';
-    require_once '../config/database.php';
-
+    $pdo = require __DIR__ . '/../config/database.php';
     try {
-        $pdo = new PDO('pgsql:host=localhost;dbname=chatapp', 'postgres', '123');
         CreateUsersTable::up($pdo);
         echo "Migration completed successfully.";
     } catch (PDOException $e) {

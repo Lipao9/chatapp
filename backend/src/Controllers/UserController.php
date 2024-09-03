@@ -6,11 +6,10 @@ use App\Models\User;
 use PDO;
 
  class UserController{
-
         private User $user;
         public function __construct()
         {
-            $pdo = new PDO('pgsql:host=localhost;dbname=chatapp', 'postgres', '123');
+            $pdo = require __DIR__ . "/../../config/database.php";
             $this->user = new User($pdo);
         }
          public function store($data): false|string

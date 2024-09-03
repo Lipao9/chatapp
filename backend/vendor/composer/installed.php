@@ -3,7 +3,7 @@
         'name' => 'lipe/chatapp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c3ea71a223de1a84559b46124b4d000901cb075f',
+        'reference' => 'fceb91b9d8cfb939102f70a01bac6304eb8e3e6b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'lipe/chatapp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c3ea71a223de1a84559b46124b4d000901cb075f',
+            'reference' => 'fceb91b9d8cfb939102f70a01bac6304eb8e3e6b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -210,7 +210,7 @@
             'version' => 'dev-latest',
             'reference' => '5ddbc0bf3c8c38da3f706c8d1203f9a6a451d44d',
             'type' => 'metapackage',
-            'install_path' => NULL,
+            'install_path' => null,
             'aliases' => array(
                 0 => '9999999-dev',
             ),
