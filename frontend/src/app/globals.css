@@ -26,6 +26,21 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.mt-muitos{
+  margin-top: 45px !important;
+}
+
+.animation-container{
+  animation: slideInFromLeft 1s ease-out;
+}
+
+.animation-h2{
+  animation: appear 2s ease-out;
+}
+
+.animation-p{
+  animation: appear 3s ease-out;
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;
