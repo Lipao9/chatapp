@@ -1,4 +1,7 @@
 <?php
+    header("Access-Control-Allow-Origin: *"); // Permite todas as origens; ajuste conforme necessário
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+    header("Access-Control-Allow-Headers: Content-Type");
 
     use App\Controllers\UserController;
     require_once '../vendor/autoload.php';
