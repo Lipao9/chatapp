@@ -29,4 +29,11 @@ use PDO;
             $this->user->delete($id);
             return json_encode(['status' => 'success']);
         }
+
+         public function getId($data)
+         {
+             header('Content-Type: application/json');
+             $user = $this->user->getId($data);
+             echo json_encode($user);
+         }
     }

@@ -4,7 +4,8 @@
 
     use PDO;
 
-    class User{
+    class User
+    {
 
         private PDO $pdo;
         public function __construct(PDO $pdo)
@@ -37,5 +38,21 @@
         {
             $stmt = $this->pdo->prepare('DELETE FROM users WHERE id = :id');
             $stmt->execute([':id' => $id]);
+        }
+
+        public function getId($data)
+        {
+            $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = :email');
+            $stmt->execute([':email' => $data['email']]);
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                return $user;
+            } else {
+                // Se não encontrar o usuário
+                return null;
+            }
+
         }
     }

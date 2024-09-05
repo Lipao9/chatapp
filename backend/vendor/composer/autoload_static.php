@@ -31,14 +31,25 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Http\\Server\\' => 16,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
+            'Psr\\EventDispatcher\\' => 20,
+            'Psr\\Clock\\' => 10,
             'PhpOption\\' => 10,
         ),
         'O' => 
         array (
             'OpenTelemetry\\Context\\' => 22,
             'OpenTelemetry\\API\\' => 18,
+        ),
+        'L' => 
+        array (
+            'League\\Uri\\' => 11,
+            'League\\OAuth2\\Server\\' => 21,
+            'League\\Event\\' => 13,
+            'Lcobucci\\JWT\\' => 13,
+            'Lcobucci\\Clock\\' => 15,
         ),
         'H' => 
         array (
@@ -61,6 +72,7 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         'D' => 
         array (
             'Dotenv\\' => 7,
+            'Defuse\\Crypto\\' => 14,
         ),
         'A' => 
         array (
@@ -93,6 +105,11 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Http\\Server\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-server-handler/src',
+            1 => __DIR__ . '/..' . '/psr/http-server-middleware/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-factory/src',
@@ -101,6 +118,14 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         'Psr\\Http\\Client\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
+        'Psr\\EventDispatcher\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/event-dispatcher/src',
+        ),
+        'Psr\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
         'PhpOption\\' => 
         array (
@@ -113,6 +138,27 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         'OpenTelemetry\\API\\' => 
         array (
             0 => __DIR__ . '/..' . '/open-telemetry/api',
+        ),
+        'League\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
+        ),
+        'League\\OAuth2\\Server\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/oauth2-server/src',
+        ),
+        'League\\Event\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/event/src',
+        ),
+        'Lcobucci\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
+        ),
+        'Lcobucci\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/clock/src',
         ),
         'Http\\Promise\\' => 
         array (
@@ -153,6 +199,10 @@ class ComposerStaticInitb7d4b7c0b7a6f9086b5a32461182b467
         'Dotenv\\' => 
         array (
             0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
+        'Defuse\\Crypto\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/defuse/php-encryption/src',
         ),
         'App\\' => 
         array (

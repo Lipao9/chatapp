@@ -1,47 +1,69 @@
-import { FC, ReactHTMLElement, useState } from "react";
+import React, { FC, ReactHTMLElement, useState } from "react";
 import axios from "axios";
 import '../app/globals.css';
-
+import {id} from "postcss-selector-parser";
+import {json} from "node:stream/consumers";
 
 const LoginRegister: FC = () => {
-    const [formData, setFormData] = useState({
+    const [formRegisterData, setformRegisterData] = useState({
         name: '',
         email: '',
         password: ''
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {  
+    const handleChangeRegister = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setformRegisterData({
+            ...formRegisterData,
             [name]: value
         })
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+
+    const [formLogin, setformLogin] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChangeLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setformLogin({
+            ...formLogin,
+            [name]: value
+        })
+    };
+
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        try{
+            const response = await axios.get(`http://localhost:8000/api/login`, {
+                params: {
+                    email: formLogin.email,
+                    password: formLogin.password,
+                },
+            });
+
+            const user = response.data.id;
+
+            alert(user);
+
+        }catch (error){
+            console.error('Erro na requisição', error);
+            alert('Erro ao retornar o ID');
+        }
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(formRegisterData);
         try {
-            const response = await axios.post(`http://localhost:8000/api/user-create`, formData);
-        
-            if (response.status === 200) {
-              alert('Usuário cadastrado com sucesso!');
-            } else {
-              const errorMessage = `Erro ao cadastrar usuário: ${response.status} ${response.statusText}`;
-              alert(errorMessage);
-            }
-          } catch (error) {
-            if (axios.isAxiosError(error)) {
-              // Verifica se há uma resposta do servidor e extrai a mensagem de erro
-              const errorResponse = error.response?.data;
-              const errorMessage = errorResponse?.message || error.message;
-              console.error('Erro na requisição:', errorResponse);
-              alert(`Erro ao cadastrar usuário: ${errorMessage}`);
-            } else {
-              console.error('Erro desconhecido:', error);
-              alert('Erro desconhecido ao cadastrar usuário');
-            }
-          }
+            const response = await axios.post(`http://localhost:8000/api/user-create`, formRegisterData);
+            alert(response.data);
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            alert('Erro ao cadastrar usuário');
+        }
     };
 
     return (
@@ -54,7 +76,7 @@ const LoginRegister: FC = () => {
                     <p className="text-center animation-p text-gray-200">
                         Acesse sua conta
                     </p>
-                    <form method="POST" action="#" className="space-y-6">
+                    <form method="POST" onSubmit={handleLogin} className="space-y-6">
                         <div className="relative">
                             <input
                                 placeholder="john@example.com"
@@ -63,11 +85,11 @@ const LoginRegister: FC = () => {
                                 id="email"
                                 name="email"
                                 type="email"
+                                value={formLogin.email}
+                                onChange={handleChangeLogin}
                             />
-                            <label
-                                className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
-                                htmlFor="email"
-                            >
+                            <label className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
+                                htmlFor="email">
                                 Email
                             </label>
                         </div>
@@ -79,6 +101,8 @@ const LoginRegister: FC = () => {
                                 id="password"
                                 name="password"
                                 type="password"
+                                value={formLogin.password}
+                                onChange={handleChangeLogin}
                             />
                             <label
                                 className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
@@ -112,7 +136,7 @@ const LoginRegister: FC = () => {
                     <p className="text-center text-purple-500 animation-p">
                         Crie a sua conta
                     </p>
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6" method="POST">
                      <div className="relative">
                             <input
                                 placeholder="Aninha"
@@ -120,9 +144,9 @@ const LoginRegister: FC = () => {
                                 required
                                 id="name"
                                 name="name"
-                                type="name"
-                                value={formData.name}
-                                onChange={handleChange}
+                                type="text"
+                                value={formRegisterData.name}
+                                onChange={handleChangeRegister}
                             />
                             <label
                                 className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
@@ -138,8 +162,8 @@ const LoginRegister: FC = () => {
                                 id="email"
                                 name="email"
                                 type="email"
-                                value={formData.email}
-                                onChange={handleChange}
+                                value={formRegisterData.email}
+                                onChange={handleChangeRegister}
                             />
                             <label
                                 className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
@@ -156,8 +180,8 @@ const LoginRegister: FC = () => {
                                 id="password"
                                 name="password"
                                 type="password"
-                                value={formData.password}
-                                onChange={handleChange}
+                                value={formRegisterData.password}
+                                onChange={handleChangeRegister}
                             />
                             <label
                                 className="absolute left-0 -top-3.5 text-gray-500 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 peer-focus:-top-3.5 peer-focus:text-purple-500 peer-focus:text-sm"
