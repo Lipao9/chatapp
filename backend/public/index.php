@@ -1,7 +1,8 @@
 <?php
-    header("Access-Control-Allow-Origin: *"); // Permite todas as origens; ajuste conforme necessário
-    header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type");
+    header("Access-Control-Allow-Origin: http://localhost:3000");
+    header("Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+    header("Access-Control-Allow-Credentials: true");
 
     use App\Controllers\UserController;
     require_once '../vendor/autoload.php';
@@ -12,23 +13,29 @@
     $requestUri = $_SERVER['REQUEST_URI'];
     $userController = new UserController();
 
+    if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+        http_response_code(200);
+        exit();
+    }
+
     if ($pathInfo === '/api/user-create'){
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
         $userController->store($data);
     }
 
-    if (str_starts_with($requestUri, '/api/login')) {
-        if (isset($_GET['email']) && isset($_GET['password'])) {
-            $data = [
-                'email' => $_GET['email'],
-                'password' => $_GET['password']
-            ];
+    if ($pathInfo === '/api/login'){
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $userController->login($data);
+    }
 
-            $userController->getId($data);
-        } else {
-            echo "Parâmetros 'email' e 'password' não foram fornecidos.";
-        }
+    if ($pathInfo === '/api/check-auth'){
+        $userController->checkAuth();
+    }
+
+    if ($pathInfo === '/api/logout'){
+        $userController->logout();
     }
 
     // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'

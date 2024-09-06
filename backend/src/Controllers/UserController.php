@@ -30,10 +30,26 @@ use PDO;
             return json_encode(['status' => 'success']);
         }
 
-         public function getId($data)
+         public function login($data)
          {
-             header('Content-Type: application/json');
-             $user = $this->user->getId($data);
-             echo json_encode($user);
+             $this->user->login($data);
+             echo json_encode(['status' => 'success', 'message' => 'Login success']);
+         }
+
+         public function checkAuth()
+         {
+            $userLogged = $this->user->checkAuth();
+
+            if ($userLogged) {
+                echo json_encode(['status' => 'success', 'user' => $userLogged]);
+            }else{
+                echo json_encode(['status' => 'fail', 'message' => 'Login fail']);
+            }
+         }
+
+         public function logout()
+         {
+            $this->user->logout();
+            echo json_encode(['status' => 'success', 'message' => 'Logout success']);
          }
     }

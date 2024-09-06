@@ -1,10 +1,11 @@
-import React, { FC, ReactHTMLElement, useState } from "react";
+import React, {FC, useState} from "react";
 import axios from "axios";
 import '../app/globals.css';
-import {id} from "postcss-selector-parser";
-import {json} from "node:stream/consumers";
+import { useRouter } from 'next/router';
 
 const LoginRegister: FC = () => {
+    const router = useRouter();
+
     const [formRegisterData, setformRegisterData] = useState({
         name: '',
         email: '',
@@ -19,7 +20,6 @@ const LoginRegister: FC = () => {
         })
     };
 
-
     const [formLogin, setformLogin] = useState({
         email: '',
         password: ''
@@ -33,24 +33,19 @@ const LoginRegister: FC = () => {
         })
     };
 
-    const handleLogin = async (e: React.FormEvent) => {
+    const Login = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try{
-            const response = await axios.get(`http://localhost:8000/api/login`, {
-                params: {
-                    email: formLogin.email,
-                    password: formLogin.password,
-                },
+            const response = await axios.post(`http://localhost:8000/api/login`, formLogin, {
+                withCredentials: true // Permite o envio de cookies e credenciais
             });
 
-            const user = response.data.id;
-
-            alert(user);
-
+            if (response.data.status === 'success'){
+                await router.push('/home');
+            }
         }catch (error){
             console.error('Erro na requisição', error);
-            alert('Erro ao retornar o ID');
         }
     }
 
@@ -76,7 +71,7 @@ const LoginRegister: FC = () => {
                     <p className="text-center animation-p text-gray-200">
                         Acesse sua conta
                     </p>
-                    <form method="POST" onSubmit={handleLogin} className="space-y-6">
+                    <form method="POST" onSubmit={Login} className="space-y-6">
                         <div className="relative">
                             <input
                                 placeholder="john@example.com"

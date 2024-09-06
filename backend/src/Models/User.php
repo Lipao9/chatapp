@@ -40,19 +40,37 @@
             $stmt->execute([':id' => $id]);
         }
 
-        public function getId($data)
+        public function login($data)
         {
-            $stmt = $this->pdo->prepare('SELECT id FROM users WHERE email = :email');
+            session_start();
+            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :email');
             $stmt->execute([':email' => $data['email']]);
+            $user = $stmt->fetch();
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($user) {
-                return $user;
-            } else {
-                // Se não encontrar o usuário
-                return null;
+            if ($user && password_verify($data['password'], $user['password'])) {
+                $_SESSION['user'] = [
+                   'id' => $user['id'],
+                   'name' => $user['name'],
+                ];
+            }else {
+                http_response_code(401);
             }
+        }
 
+        public function checkAuth()
+        {
+            session_start();
+
+            if (isset($_SESSION['user'])) {
+                return $_SESSION['user'] ;
+            }else{
+                return false;
+            }
+        }
+
+        public function logout()
+        {
+            session_start();
+            session_destroy();
         }
     }
