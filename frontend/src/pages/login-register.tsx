@@ -54,7 +54,7 @@ const LoginRegister: FC = () => {
         console.log(formRegisterData);
         try {
             const response = await axios.post(`http://localhost:8000/api/user-create`, formRegisterData);
-            alert(response.data);
+            alert('Cadastro efetuado com sucesso!');
         } catch (error) {
             console.error('Erro na requisição:', error);
             alert('Erro ao cadastrar usuário');
