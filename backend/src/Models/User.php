@@ -73,4 +73,74 @@
             session_start();
             session_destroy();
         }
+
+        public function addFriend($data)
+        {
+            $friend_id = $this->getFriendId($data['friend']);
+            $check_invite = $this->checkInvite($friend_id, $data['user_id']);
+
+            if ($check_invite) {
+                return json_encode(['mensage' => 'Convite já enviado']);
+            }
+
+            $stmt = $this->pdo->prepare('INSERT INTO friends (user_id, friend_id) VALUES (:user_id, :friend_id)');
+            $stmt->execute([
+                $data['user_id'],
+                $friend_id
+            ]);
+
+            if ($stmt->rowCount() > 0) {
+                return json_encode(['mensage' => 'Convite enviado']);
+            }else{
+                return json_encode(['mensage' => 'Erro ao enviar convite']);
+            }
+        }
+
+        public function getFriendId($friend)
+        {
+            $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = :search OR name = :search");
+            $stmt->execute([':search' => $friend]);
+            $friend = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $friend['id'];
+        }
+
+        public function checkInvite($friend_id, $user_id)
+        {
+            $stmt = $this->pdo->prepare("SELECT * FROM friends WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)");
+            $stmt->execute([
+                $user_id,
+                $friend_id,
+                $friend_id,
+                $user_id
+            ]);
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return true;
+            }
+            return false;
+        }
+
+        public function invitesList($user_id)
+        {
+            $stmt = $this->pdo->prepare("SELECT user_id FROM friends WHERE friend_id = ?");
+            $stmt->execute([$user_id]);
+
+            $requesters = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (!$requesters) {
+                return json_encode(['mensage' => 'Deu merda aqui hein']);
+            }
+
+            $users = [];
+
+            foreach ($requesters as $requester) {
+                $stmt = $this->pdo->prepare("SELECT id, name FROM users WHERE id = :id");
+                $stmt->execute([':id' => $requester['user_id']]);
+                $users[] = $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+
+            return json_encode($users);
+        }
     }

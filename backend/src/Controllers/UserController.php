@@ -52,4 +52,14 @@ use PDO;
             $this->user->logout();
             echo json_encode(['status' => 'success', 'message' => 'Logout success']);
          }
-    }
+
+         public function addFriend($data)
+         {
+            echo $this->user->addFriend($data);
+         }
+
+         public function invitesList(int $userId)
+         {
+             echo $this->user->invitesList($userId);
+         }
+ }

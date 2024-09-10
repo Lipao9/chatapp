@@ -38,7 +38,18 @@
         $userController->logout();
     }
 
-    // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
+    if ($pathInfo === '/api/add-friend'){
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $userController->addFriend($data);
+    }
+
+    if ($pathInfo === '/api/invites'){
+        $user_id = $_GET['user_id'];
+        $userController->invitesList($user_id);
+    }
+
+// Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
     if (preg_match('/^\/api\/user-edit\/(\d+)/', $requestUri, $matches)) {
         // O ID do usuário está no primeiro grupo de captura
         $userId = $matches[1];

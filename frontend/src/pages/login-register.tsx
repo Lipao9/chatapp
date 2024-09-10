@@ -51,7 +51,6 @@ const LoginRegister: FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formRegisterData);
         try {
             const response = await axios.post(`http://localhost:8000/api/user-create`, formRegisterData);
             alert('Cadastro efetuado com sucesso!');
@@ -132,7 +131,7 @@ const LoginRegister: FC = () => {
                         Crie a sua conta
                     </p>
                     <form onSubmit={handleSubmit} className="space-y-6" method="POST">
-                     <div className="relative">
+                         <div className="relative">
                             <input
                                 placeholder="Aninha"
                                 className="peer h-10 w-full border-b-2 border-gray-300 bg-transparent placeholder-transparent focus:outline-none focus:border-purple-500 text-gray-400"

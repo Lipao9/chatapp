@@ -26,6 +26,28 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.text-gradient {
+  background: linear-gradient(to right, rgb(30 64 175), rgb(147 51 234));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.text-gradient:hover{
+  transition: ease-in-out 600ms;
+  background: linear-gradient(to right, rgb(147 51 234), rgb(30 64 175));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.text-gradient:hover .hover-icon{
+  transition: ease-in-out 600ms;
+  color: rgb(30 64 175);
+}
+
 .mt-muitos{
   margin-top: 45px !important;
 }
