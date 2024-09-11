@@ -15,20 +15,6 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({isOpen, onClose, userId, children}) => {
     if (!isOpen) return null;
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const response = await axios.get('http://localhost:8000/api/add-friend', {
-                    withCredentials: true // Permite o envio de cookies e credenciais
-                });
-
-            } catch (err) {
-                console.log('Erro:' + err);
-            }
-        };
-        checkAuth();
-    }, []);
-
     const [friend, setFriend] = useState('');
 
     const handleFriend = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +24,7 @@ const Modal: FC<ModalProps> = ({isOpen, onClose, userId, children}) => {
     const AddFriend = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8000/api/add-friend`, {
+            const response = await axios.post(`http://localhost:8000/api/send-invite`, {
                 user_id: userId,
                 friend: friend
             });
@@ -54,6 +40,7 @@ const Modal: FC<ModalProps> = ({isOpen, onClose, userId, children}) => {
             onClick={onClose}
         >
             <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-sm" onClick={(e) => e.stopPropagation()}>
+                {children}
                 <form action="" onSubmit={AddFriend}>
                     <div className="flex items-center">
                         <div className="relative w-5/6">
@@ -81,13 +68,9 @@ const Modal: FC<ModalProps> = ({isOpen, onClose, userId, children}) => {
                         </button>
                     </div>
                 </form>
-                <div className="p-2">
+                <div className="p-4">
                     <InviteList userId={userId}/>
                 </div>
-                <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-900" onClick={onClose}>
-                    &times;
-                </button>
-                {children}
             </div>
         </div>
     )

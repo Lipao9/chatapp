@@ -74,25 +74,28 @@
             session_destroy();
         }
 
-        public function addFriend($data)
+        public function sendInvite($data)
         {
             $friend_id = $this->getFriendId($data['friend']);
             $check_invite = $this->checkInvite($friend_id, $data['user_id']);
 
-            if ($check_invite) {
+            if ($check_invite === 'exists') {
                 return json_encode(['mensage' => 'Convite já enviado']);
-            }
-
-            $stmt = $this->pdo->prepare('INSERT INTO friends (user_id, friend_id) VALUES (:user_id, :friend_id)');
-            $stmt->execute([
-                $data['user_id'],
-                $friend_id
-            ]);
-
-            if ($stmt->rowCount() > 0) {
+            }elseif ($check_invite === 'rejected') {
+                $this->updateRejectedInvite($friend_id, $data['user_id']);
                 return json_encode(['mensage' => 'Convite enviado']);
             }else{
-                return json_encode(['mensage' => 'Erro ao enviar convite']);
+                $stmt = $this->pdo->prepare('INSERT INTO friends (user_id, friend_id) VALUES (:user_id, :friend_id)');
+                $stmt->execute([
+                    $data['user_id'],
+                    $friend_id
+                ]);
+
+                if ($stmt->rowCount() > 0) {
+                    return json_encode(['mensage' => 'Convite enviado']);
+                }else{
+                    return json_encode(['mensage' => 'Erro ao enviar convite']);
+                }
             }
         }
 
@@ -116,21 +119,36 @@
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return true;
+            if($result['status'] === 'reject'){
+                return 'rejected';
             }
-            return false;
+
+            if ($result) {
+                return 'exists';
+            }
+            return 'send';
+        }
+
+        public function updateRejectedInvite($friend_id, $user_id)
+        {
+            $stmt = $this->pdo->prepare("UPDATE friends SET status = 'pending' WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)");
+            $stmt->execute([
+                $user_id,
+                $friend_id,
+                $friend_id,
+                $user_id
+            ]);
         }
 
         public function invitesList($user_id)
         {
-            $stmt = $this->pdo->prepare("SELECT user_id FROM friends WHERE friend_id = ?");
+            $stmt = $this->pdo->prepare("SELECT user_id FROM friends WHERE friend_id = ? AND status = 'pending'");
             $stmt->execute([$user_id]);
 
             $requesters = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (!$requesters) {
-                return json_encode(['mensage' => 'Deu merda aqui hein']);
+                return json_encode([]);
             }
 
             $users = [];
@@ -142,5 +160,17 @@
             }
 
             return json_encode($users);
+        }
+
+        public function respondInvite($data)
+        {
+            $stmt = $this->pdo->prepare('UPDATE friends SET status = ? WHERE user_id = ? AND friend_id = ?');
+            $stmt->execute([
+                $data['response'],
+                $data['friend_id'],
+                $data['user_id']
+            ]);
+
+            return json_encode(['mensage' => 'Convite respondido com sucesso!']);
         }
     }

@@ -53,13 +53,18 @@ use PDO;
             echo json_encode(['status' => 'success', 'message' => 'Logout success']);
          }
 
-         public function addFriend($data)
+         public function sendInvite($data)
          {
-            echo $this->user->addFriend($data);
+            echo $this->user->sendInvite($data);
          }
 
          public function invitesList(int $userId)
          {
              echo $this->user->invitesList($userId);
+         }
+
+         public function respondInvite($data)
+         {
+            echo $this->user->respondInvite($data);
          }
  }

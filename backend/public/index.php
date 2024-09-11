@@ -38,16 +38,23 @@
         $userController->logout();
     }
 
-    if ($pathInfo === '/api/add-friend'){
+    if ($pathInfo === '/api/send-invite'){
         $input = file_get_contents('php://input');
         $data = json_decode($input, true);
-        $userController->addFriend($data);
+        $userController->sendInvite($data);
     }
 
     if ($pathInfo === '/api/invites'){
         $user_id = $_GET['user_id'];
         $userController->invitesList($user_id);
     }
+
+    if ($pathInfo === '/api/respond-invite'){
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $userController->respondInvite($data);
+    }
+
 
 // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
     if (preg_match('/^\/api\/user-edit\/(\d+)/', $requestUri, $matches)) {

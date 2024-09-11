@@ -48,14 +48,13 @@ const Home: FC = () => {
                 </div>
             </div>
             <ModalAdd isOpen={isModalOpen} onClose={closeModal} userId={user.id}>
-                <h2 className="text-xl mb-4">Título da Modal</h2>
-                <p>Conteúdo da modal...</p>
-                <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    onClick={closeModal}
-                >
-                    Fechar
-                </button>
+                <div className="flex justify-end mb-4">
+                    <FontAwesomeIcon
+                        className="text-gray-400 cursor-pointer hover:text-gray-500"
+                        icon="x"
+                        onClick={closeModal}
+                    />
+                </div>
             </ModalAdd>
         </div>
 
