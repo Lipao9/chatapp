@@ -5,6 +5,9 @@ import {useRouter} from "next/router";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../lib/fontAwesome'; // Importe o arquivo de configuração
 import ModalAdd from "@/components/ModalAdd";
+import FriendsList from "@/components/FriendsList";
+
+import {id} from "postcss-selector-parser";
 
 const Home: FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +34,17 @@ const Home: FC = () => {
         checkAuth();
     }, []);
 
+    const Logout = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/api/logout', {
+                withCredentials: true // Permite o envio de cookies e credenciais
+            });
+            window.location.reload()
+        } catch (err) {
+            await router.push('/login');
+        }
+    };
+
     if (!user) return <p>Loading...</p>;
 
     return (
@@ -41,7 +55,11 @@ const Home: FC = () => {
                         <h2 className="text-white text-xl">{user.name}</h2>
                         <FontAwesomeIcon icon="user-plus" className="cursor-pointer hover:text-gray-200" onClick={openModal}/>
                     </div>
-
+                    <hr className="py-2 mt-3"/>
+                    <FriendsList userId={user.id}/>
+                    <div>
+                        <FontAwesomeIcon icon="right-from-bracket" size="lg" className="cursor-pointer hover:text-gray-200" onClick={Logout}/>
+                    </div>
                 </div>
                 <div className="w-3/4 bg-gray-100 rounded-e-lg flex justify-center">
                     <h1 className="text-black text-xl mt-2">Bem-Vindo(a) {user.name}</h1>

@@ -173,4 +173,39 @@
 
             return json_encode(['mensage' => 'Convite respondido com sucesso!']);
         }
+
+        public function getFriends($user_id)
+        {
+            $sql = "
+                    SELECT
+                        CASE
+                            WHEN user_id = :userId THEN friend_id
+                            ELSE user_id
+                        END AS friend_id
+                    FROM friends
+                    WHERE (user_id = :userId OR friend_id = :userId)
+                      AND status = 'accept'
+                ";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->execute([
+                'userId' => $user_id,
+            ]);
+
+            $friendIds = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+            if ($friendIds === []) {
+                return json_encode([]);
+            }
+            $placeholders = implode(',', array_fill(0, count($friendIds), '?'));
+            $sql = "SELECT id, name FROM users WHERE id IN ($placeholders)";
+
+            // Prepara e executa a consulta
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($friendIds);
+
+            // Recupera os detalhes dos amigos
+            $friendsDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return json_encode($friendsDetails);
+        }
     }

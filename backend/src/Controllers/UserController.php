@@ -67,4 +67,9 @@ use PDO;
          {
             echo $this->user->respondInvite($data);
          }
+
+         public function friendsList(int $userId)
+         {
+            echo $this->user->getFriends($userId);
+         }
  }

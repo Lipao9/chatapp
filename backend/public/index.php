@@ -55,6 +55,11 @@
         $userController->respondInvite($data);
     }
 
+    if ($pathInfo === '/api/list-friends'){
+        $user_id = $_GET['user_id'];
+        $userController->friendsList($user_id);
+    }
+
 
 // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
     if (preg_match('/^\/api\/user-edit\/(\d+)/', $requestUri, $matches)) {
