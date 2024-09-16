@@ -72,4 +72,9 @@ use PDO;
          {
             echo $this->user->getFriends($userId);
          }
+
+     public function removeFriend(mixed $data)
+     {
+         $this->user->removeFriend($data);
+     }
  }

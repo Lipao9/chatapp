@@ -60,6 +60,12 @@
         $userController->friendsList($user_id);
     }
 
+    if ($pathInfo === '/api/remove-friend'){
+        $input = file_get_contents('php://input');
+        $data = json_decode($input, true);
+        $userController->removeFriend($data);
+    }
+
 
 // Verifica se o caminho corresponde ao padrão '/api/user-edit/{id}'
     if (preg_match('/^\/api\/user-edit\/(\d+)/', $requestUri, $matches)) {

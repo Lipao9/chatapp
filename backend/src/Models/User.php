@@ -208,4 +208,15 @@
             $friendsDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return json_encode($friendsDetails);
         }
+
+        public function removeFriend(mixed $data)
+        {
+            $stmt = $this->pdo->prepare('DELETE FROM friends WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)');
+            $stmt->execute([
+                $data['user_id'],
+                $data['friend_id'],
+                $data['friend_id'],
+                $data['user_id']
+            ]);
+        }
     }

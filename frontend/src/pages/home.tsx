@@ -8,12 +8,14 @@ import ModalAdd from "@/components/ModalAdd";
 import FriendsList from "@/components/FriendsList";
 
 import {id} from "postcss-selector-parser";
+import ChatBox from "@/components/ChatBox";
 
 const Home: FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
     const [user, setUser] = useState(null);
+    const [selectedFriend, setSelectedFriend] = useState<{ id: number; name: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {
@@ -56,13 +58,19 @@ const Home: FC = () => {
                         <FontAwesomeIcon icon="user-plus" className="cursor-pointer hover:text-gray-200" onClick={openModal}/>
                     </div>
                     <hr className="py-2 mt-3"/>
-                    <FriendsList userId={user.id}/>
+                    <FriendsList userId={user.id} onSelectFriend={setSelectedFriend}/>
                     <div>
                         <FontAwesomeIcon icon="right-from-bracket" size="lg" className="cursor-pointer hover:text-gray-200" onClick={Logout}/>
                     </div>
                 </div>
                 <div className="w-3/4 bg-gray-100 rounded-e-lg flex justify-center">
-                    <h1 className="text-black text-xl mt-2">Bem-Vindo(a) {user.name}</h1>
+                    {selectedFriend ? (
+                        <ChatBox friendId={selectedFriend.id} friendName={selectedFriend.name} />
+                    ) : (
+                        <div style={{ width: '70%', padding: '10px' }}>
+                            <h2>Selecione um contato para conversar</h2>
+                        </div>
+                    )}
                 </div>
             </div>
             <ModalAdd isOpen={isModalOpen} onClose={closeModal} userId={user.id}>
