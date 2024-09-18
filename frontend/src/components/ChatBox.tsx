@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import '../app/globals.css';
 
 interface ChatBoxProps {
     friendId: number;
@@ -8,43 +9,64 @@ interface ChatBoxProps {
 const ChatBox: React.FC<ChatBoxProps> = ({ friendId, friendName }) => {
     const [messages, setMessages] = useState<string[]>([]);
     const [inputMessage, setInputMessage] = useState('');
-    let ws: WebSocket;
+    const ws = useRef<WebSocket | null>(null);
 
     useEffect(() => {
-        // Conecte ao servidor WebSocket com a identificação do amigo selecionado
-        ws = new WebSocket(`ws://localhost:8080/chat/${friendId}`);
+        // Estabelecer conexão WebSocket com o chatId
+        const socket = new WebSocket(`ws://localhost:8080/?chatId=${friendId}`);
+        ws.current = socket;
 
-        ws.onmessage = (event) => { 
+        socket.onopen = () => {
+            console.log('Conectado ao servidor WebSocket');
+        };
+
+        socket.onmessage = (event) => {
             setMessages((prev) => [...prev, event.data]);
         };
 
+        socket.onclose = () => {
+            console.log('Conexão fechada');
+        };
+
+        socket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
         return () => {
-            ws.close();
+            socket.close();
         };
     }, [friendId]);
 
     const sendMessage = () => {
-        if (inputMessage.trim() !== '') {
-            ws.send(inputMessage);
+        if (inputMessage.trim() !== '' && ws.current && ws.current.readyState === WebSocket.OPEN) {
+            ws.current.send(inputMessage);
+            setMessages((prev) => [...prev, `Você: ${inputMessage}`]);
             setInputMessage('');
         }
     };
 
     return (
-        <div style={{ width: '70%', padding: '10px' }}>
-            <h2>Chat com {friendName}</h2>
-            <div style={{ height: '300px', overflowY: 'scroll', border: '1px solid #ccc', padding: '10px' }}>
+        <div className="w-full">
+            <h2 className="text-gray-800 py-2 px-5 text-xl">Chat com {friendName}</h2>
+            <div className="overflow-y-auto border border-t-purple-600 p-5 h-99">
                 {messages.map((msg, index) => (
-                    <p key={index}>{msg}</p>
+                    <p className="text-xl text-gray-600" key={index}>{msg}</p>
                 ))}
             </div>
-            <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                style={{ width: '80%', padding: '10px', marginRight: '10px' }}
-            />
-            <button onClick={sendMessage}>Enviar</button>
+            <div className="w-full flex justify-center">
+                <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    className="text-gray-600 px-5 py-2 rounded-md border-gray-500 w-4/5 border mx-2"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            sendMessage();
+                        }
+                    }}
+                />
+                <button onClick={sendMessage} className="bg-gradient-to-r from-blue-800 to-purple-600 w-1/5 rounded mx-2 hover:bg-gradient-to-l py-2 px-5">Enviar</button>
+            </div>
         </div>
     );
 };
