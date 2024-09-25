@@ -65,7 +65,7 @@ const Home: FC = () => {
                 </div>
                 <div className="w-3/4 bg-gray-100 rounded-e-lg flex justify-center">
                     {selectedFriend ? (
-                        <ChatBox friendId={selectedFriend.id} friendName={selectedFriend.name} />
+                        <ChatBox userId={user.id} friendId={selectedFriend.id} friendName={selectedFriend.name} />
                     ) : (
                         <div style={{ width: '70%', padding: '10px' }}>
                             <h2>Selecione um contato para conversar</h2>

@@ -2,18 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../app/globals.css';
 
 interface ChatBoxProps {
+    userId: number;
     friendId: number;
     friendName: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ friendId, friendName }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ userId, friendId, friendName }) => {
     const [messages, setMessages] = useState<string[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const ws = useRef<WebSocket | null>(null);
 
     useEffect(() => {
         // Estabelecer conexão WebSocket com o chatId
-        const socket = new WebSocket(`ws://localhost:8080/?chatId=${friendId}`);
+        const socket = new WebSocket(`ws://localhost:8080?chatId=${friendId}&userId=${userId}`);
         ws.current = socket;
 
         socket.onopen = () => {
