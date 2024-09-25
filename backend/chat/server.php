@@ -35,6 +35,8 @@ class Chat implements MessageComponentInterface {
 
             if (isset($this->chatRooms[$userId.'-'.$chatId])) {
                 $this->chatRooms[$userId.'-'.$chatId]->attach($conn);
+            }elseif(isset($this->chatRooms[$chatId.'-'.$userId])){
+                $this->chatRooms[$chatId.'-'.$userId]->attach($conn);
             }
 
           //  echo $this->chatRooms[$chatId.'-'.$userId];
