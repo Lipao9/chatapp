@@ -40,7 +40,7 @@ class Chat implements MessageComponentInterface {
             }
 
           //  echo $this->chatRooms[$chatId.'-'.$userId];
-            echo "Nova conexão na sala de chat {$chatId} (ID: {$conn->resourceId})\n";
+            echo "Nova conexão na sala de chat {$chatId} com {$userId} (ID: {$conn->resourceId})\n";
         } else {
             echo "Nova conexão sem chatId (ID: {$conn->resourceId})\n";
         }
@@ -63,27 +63,28 @@ class Chat implements MessageComponentInterface {
             $chatId = $from->chatId;
             $userId = $from->userId;
 
+            $data = json_decode($msg);
             // Criar a mensagem a ser enviada
-//            $message = [
-//                'userId' => $userId,
-//                'message' => $msg,
-//                'timestamp' => time()
-//            ];
+            $message = [
+                'userId' => $data->userId,
+                'message' => $data->message,
+                'timestamp' => time()
+            ];
 
             // Enviar a mensagem para todos os usuários na sala de chat correspondente
             if (isset($this->chatRooms[$chatId.'-'.$userId])) {
                 foreach ($this->chatRooms[$chatId.'-'.$userId] as $client) {
                     // Não enviar a mensagem de volta para quem a enviou
-                    if ($from !== $client) {
-                        $client->send($msg);
-                    }
+//                    if ($from !== $client) {
+                        $client->send(json_encode($message));
+//                    }
                 }
             } elseif (isset($this->chatRooms[$userId.'-'.$chatId])) {
                 foreach ($this->chatRooms[$userId.'-'.$chatId] as $client) {
                     // Não enviar a mensagem de volta para quem a enviou
-                    if ($from !== $client) {
-                        $client->send($msg);
-                    }
+//                    if ($from !== $client) {
+                        $client->send(json_encode($message));
+//                    }
                 }
             }
         }

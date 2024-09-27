@@ -8,7 +8,7 @@ interface ChatBoxProps {
 }
 
 const ChatBox: React.FC<ChatBoxProps> = ({ userId, friendId, friendName }) => {
-    const [messages, setMessages] = useState<string[]>([]);
+    const [messages, setMessages] = useState<{ userId: number; message: string }[]>([]);
     const [inputMessage, setInputMessage] = useState('');
     const ws = useRef<WebSocket | null>(null);
 
@@ -22,7 +22,12 @@ const ChatBox: React.FC<ChatBoxProps> = ({ userId, friendId, friendName }) => {
         };
 
         socket.onmessage = (event) => {
-            setMessages((prev) => [...prev, event.data]);
+            try {
+                const parsedMessage = JSON.parse(event.data);
+                setMessages((prev) => [...prev, { userId: parsedMessage.userId, message: parsedMessage.message }]);
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
         };
 
         socket.onclose = () => {
@@ -40,21 +45,35 @@ const ChatBox: React.FC<ChatBoxProps> = ({ userId, friendId, friendName }) => {
 
     const sendMessage = () => {
         if (inputMessage.trim() !== '' && ws.current && ws.current.readyState === WebSocket.OPEN) {
-            ws.current.send(inputMessage);
-            setMessages((prev) => [...prev, `Você: ${inputMessage}`]);
+            const messageObject = JSON.stringify({ userId, message: inputMessage });
+            ws.current.send(messageObject);
             setInputMessage('');
         }
     };
 
     return (
-        <div className="w-full">
+        <div className="w-full flex flex-col">
             <h2 className="text-gray-800 py-2 px-5 text-xl">Chat com {friendName}</h2>
-            <div className="overflow-y-auto border border-t-purple-600 p-5 h-99">
+            <div className="overflow-y-auto border border-t-purple-600 p-5 grow">
                 {messages.map((msg, index) => (
-                    <p className="text-xl text-gray-600" key={index}>{msg}</p>
+                    msg.userId === userId ? (
+                        // Div para mensagens do usuário
+                        <div className="flex justify-end mb-2" key={index}>
+                            <div className="bg-gradient-to-r from-blue-800 to-purple-600 text-white p-3 rounded-lg max-w-xs">
+                                <p>{msg.message}</p>
+                            </div>
+                        </div>
+                    ) : (
+                        // Div para mensagens do amigo
+                        <div className="flex justify-start mb-2" key={index}>
+                            <div className="bg-gray-300 text-black p-3 rounded-lg max-w-xs">
+                                <p>{msg.message}</p>
+                            </div>
+                        </div>
+                    )
                 ))}
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center py-2">
                 <input
                     type="text"
                     value={inputMessage}

@@ -52,14 +52,14 @@ const Home: FC = () => {
     return (
         <div className="w-full h-screen bg-gray-200 flex justify-center items-center">
             <div className="w-2/3 h-2/3 shadow flex">
-                <div className="w-1/4 bg-gradient-to-r from-blue-800 to-purple-600 rounded-s-lg p-3">
+                <div className="w-1/4 bg-gradient-to-r flex flex-col from-blue-800 to-purple-600 rounded-s-lg p-3">
                     <div className="flex items-center justify-between">
                         <h2 className="text-white text-xl">{user.name}</h2>
                         <FontAwesomeIcon icon="user-plus" className="cursor-pointer hover:text-gray-200" onClick={openModal}/>
                     </div>
                     <hr className="py-2 mt-3"/>
                     <FriendsList userId={user.id} onSelectFriend={setSelectedFriend}/>
-                    <div>
+                    <div className="mt-auto py-1">
                         <FontAwesomeIcon icon="right-from-bracket" size="lg" className="cursor-pointer hover:text-gray-200" onClick={Logout}/>
                     </div>
                 </div>
